@@ -6,6 +6,8 @@ from bpy_extras.io_utils import (
     axis_conversion,
 )
 
+IOMPETOrientationHelper = orientation_helper_factory("IOMPETOrientationHelper", axis_forward='Z', axis_up='X')
+
 bl_info = {
     "name": "PangYa Model",
     "author": "John Chadwick",
@@ -16,7 +18,7 @@ bl_info = {
 }
 
 # ImportMpet implements the operator for importing Mpet models.
-class ImportMpet(bpy.types.Operator, ImportHelper):
+class ImportMpet(bpy.types.Operator, ImportHelper, IOMPETOrientationHelper):
     """Import from Pangya Model (.pet, .mpet)"""
     bl_idname = 'import_scene.pangya_mpet'
     bl_label = 'Import Pangya Model'
@@ -30,8 +32,13 @@ class ImportMpet(bpy.types.Operator, ImportHelper):
 
     def execute(self, context):
         from . import import_mpet
-        keywords = self.as_keywords(ignore=("filter_glob",))
-        return import_mpet.load(self, context, **keywords)
+
+        matrix = axis_conversion(
+            from_forward=self.axis_forward,
+            from_up=self.axis_up,
+        ).to_4x4()
+
+        return import_mpet.load(self, context, self.filepath, matrix)
 
 # ExportMpet implements the operator for exporting to Mpet.
 class ExportMpet(bpy.types.Operator, ExportHelper):
