@@ -151,9 +151,9 @@ class Texture:
 
 
 class Bone:
-    def __init__(self, name=None, id=None, matrix=None):
+    def __init__(self, name=None, parent=None, matrix=None):
         self.name = name
-        self.id = id
+        self.parent = parent
         self.matrix = matrix
 
     def is_valid(self):
@@ -161,16 +161,16 @@ class Bone:
 
     def load(self, file):
         self.name = read_cstr(file)
-        self.id, = read_struct(file, '<B')
+        self.parent, = read_struct(file, '<B')
         self.matrix = read_struct(file, '<12f')
 
     def save(self, file):
         write_cstr(file, self.name)
-        write_struct(file, '<B12f', self.id, *self.matrix)
+        write_struct(file, '<B12f', self.parent, *self.matrix)
 
     def __repr__(self):
         fmt = "Bone(%s, %d, [%f" + (", %f" * 11) + "])"
-        return fmt % (self.name, self.id, *self.matrix)
+        return fmt % (self.name, self.parent, *self.matrix)
 
 
 class BoneWeight:

@@ -6,7 +6,7 @@ from bpy_extras.io_utils import (
     axis_conversion,
 )
 
-IOMPETOrientationHelper = orientation_helper_factory("IOMPETOrientationHelper", axis_forward='Z', axis_up='X')
+IOMPETOrientationHelper = orientation_helper_factory("IOMPETOrientationHelper", axis_forward='Z', axis_up='Y')
 
 bl_info = {
     "name": "PangYa Model",
