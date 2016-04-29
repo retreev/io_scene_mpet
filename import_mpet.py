@@ -130,13 +130,16 @@ def load_mpet(scene, file, matrix):
         for vert in mesh.vertices:
             vector = Vector([0, 0, 0, 0])
             vertpos = Vector([vert.x, vert.y, vert.z, 1])
-            # TODO(johnwchadwick): I reckon something is wrong with my math for multiple weights.
-            for weight in vert.bone_weights:
-                mat = calc_bonemat(model, weight.id)
-                vector += mat * vertpos * (1.0 / 255 * weight.weight)
-            verts.append(vector.x / vector.w)
-            verts.append(vector.y / vector.w)
-            verts.append(vector.z / vector.w)
+
+            weight = vert.bone_weights[0]
+            mat = calc_bonemat(model, weight.id)
+            vector += mat * vertpos * (1.0 / 255 * weight.weight)
+
+            verts.extend((
+                (vector.x / vector.w),
+                (vector.y / vector.w),
+                (vector.z / vector.w),
+            ))
         bmesh.vertices.add(len(mesh.vertices))
         bmesh.vertices.foreach_set("co", verts)
 
