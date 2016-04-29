@@ -58,8 +58,11 @@ def load_mpet(scene, file, matrix):
         base, ext = os.path.splitext(fn)
         if ext == ".dds":
             tex.image = load_image(fn, find_parent_folder(dirname, 'texture_dds'))
-        else:
+        elif os.path.exists(os.path.join(dirname, fn)):
             tex.image = load_image(fn, dirname)
+        else:
+            tex.image = load_image(fn, find_parent_folder(dirname, 'z_common'))
+
 
         mat = bpy.data.materials.new(fn)
         mat.active_texture = tex
