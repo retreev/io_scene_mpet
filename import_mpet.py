@@ -196,7 +196,7 @@ def load_mpet(scene, file, matrix):
             group_name = model.bones[id].name.decode('utf-8')
             bgroup = obj.vertex_groups.new(group_name)
             for weight in weights:
-                bgroup.add([weight.vertex], weight.weight, 'REPLACE')
+                bgroup.add([weight.vertex], weight.weight, 'ADD')
 
         obj.matrix_world = obj.matrix_world * matrix
         scene.objects.link(obj)
