@@ -13,13 +13,13 @@ from .mpet import Mpet
 
 
 # Attempts to find PangYa's texture_dds folder, containing DDS textures.
-def find_dds_textures_folder(dirname):
+def find_parent_folder(dirname, folder):
     parent = os.path.dirname(dirname)
-    texdir = os.path.join(dirname, 'texture_dds')
+    texdir = os.path.join(dirname, folder)
     if os.path.exists(texdir):
         return texdir
     elif dirname != parent:
-        return find_dds_textures_folder(parent)
+        return find_parent_folder(parent, folder)
     else:
         return None
 
@@ -57,7 +57,7 @@ def load_mpet(scene, file, matrix):
 
         base, ext = os.path.splitext(fn)
         if ext == ".dds":
-            tex.image = load_image(fn, find_dds_textures_folder(dirname))
+            tex.image = load_image(fn, find_parent_folder(dirname, 'texture_dds'))
         else:
             tex.image = load_image(fn, dirname)
 
