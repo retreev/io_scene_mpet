@@ -94,7 +94,7 @@ def load_mpet(scene, file, matrix):
         armature.edit_bones.active = bbone
 
         bbone.use_deform = True
-        bbone.use_connect = False
+        bbone.use_connect = True
         bbone.use_inherit_rotation = True
         bbone.use_inherit_scale = True
         bbone.use_local_location = True
@@ -116,7 +116,7 @@ def load_mpet(scene, file, matrix):
         if bone.parent != 255:
             parent = bbonemap[bone.parent]
             bbone.parent = parent
-            bbone.tail = parent.head
+            bbone.head = parent.tail
 
     bpy.ops.object.mode_set(mode='OBJECT')
 
